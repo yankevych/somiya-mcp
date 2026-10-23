@@ -1,0 +1,47 @@
+{
+  "name": "somiya-mcp",
+  "version": "0.1.0",
+  "mcpName": "app.somiya/mcp",
+  "description": "MCP server for Somiya — point your own AI assistant at your family's calendar and tasks. It reads and suggests; you confirm in the app.",
+  "license": "MIT",
+  "homepage": "https://somiya.app/mcp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yankevych/somiya-mcp.git"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "family",
+    "calendar",
+    "tasks",
+    "shopping-list",
+    "privacy",
+    "somiya"
+  ],
+  "type": "module",
+  "bin": {
+    "somiya-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "start": "node dist/index.js",
+    "prepack": "tsc"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.2",
+    "typescript": "5.9.3"
+  }
+}

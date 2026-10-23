@@ -1,0 +1,31 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "app.somiya/mcp",
+  "title": "Somiya",
+  "description": "Your family's Somiya calendar, tasks and lists. Reads; any change waits for you to confirm.",
+  "websiteUrl": "https://somiya.app/mcp",
+  "repository": {
+    "url": "https://github.com/yankevych/somiya-mcp",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "somiya-mcp",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "SOMIYA_TOKEN",
+          "description": "Token created in the Somiya app under Settings → AI access",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

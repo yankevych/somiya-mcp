@@ -329,13 +329,23 @@ const TOOL_DEFS: ToolDef[] = [
   },
 ];
 
+const NO_TOKEN =
+  "SOMIYA_TOKEN is not set. Create one in the Somiya app under " +
+  "Settings → AI access, then put it in your client's MCP config.";
+
+const VERSION = "0.1.1";
+
 async function main(): Promise<void> {
   const token = process.env.SOMIYA_TOKEN?.trim();
   if (!token) {
-    fail(
-      "SOMIYA_TOKEN is not set. Create one in the Somiya app under " +
-        "Settings → AI access, then put it in your client's MCP config.",
-    );
+    // Without a token there are no scopes to ask about, so every tool is listed
+    // and each one answers with how to get a token. Exiting instead left the
+    // user with a client that showed the server as failed and no reason in
+    // front of them — and left directories that start a server to read its
+    // tool list with nothing to read.
+    note(`${NO_TOKEN} Listing every tool; each call will say how to get one.`);
+    await serve(TOOL_DEFS, null);
+    return;
   }
   const baseUrl = (process.env.SOMIYA_API_URL?.trim() || DEFAULT_API_URL).replace(/\/+$/, "");
 
@@ -353,15 +363,21 @@ async function main(): Promise<void> {
 
   const granted = new Set(me.scopes);
   const active = TOOL_DEFS.filter((def) => def.scope === null || granted.has(def.scope));
-  const byName = new Map(active.map((def) => [def.tool.name, def]));
 
   note(
     `connected as "${me.token_name}" (${me.role}); scopes: ${me.scopes.join(", ") || "none"}; ` +
       `${active.length} tools; token expires ${me.expires_at.slice(0, 10)}`,
   );
 
+  await serve(active, client);
+}
+
+/** Speak MCP over stdio. A null client means no token: every call says so. */
+async function serve(active: ToolDef[], client: SomiyaClient | null): Promise<void> {
+  const byName = new Map(active.map((def) => [def.tool.name, def]));
+
   const server = new Server(
-    { name: "somiya", version: "0.1.0" },
+    { name: "somiya", version: VERSION },
     { capabilities: { tools: {} } },
   );
 
@@ -378,6 +394,10 @@ async function main(): Promise<void> {
         isError: true,
         content: [{ type: "text" as const, text: `Unknown tool: ${request.params.name}` }],
       };
+    }
+
+    if (!client) {
+      return { isError: true, content: [{ type: "text" as const, text: NO_TOKEN }] };
     }
 
     try {

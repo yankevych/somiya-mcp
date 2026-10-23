@@ -23,10 +23,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
       - run: pnpm build
-      # Without a token the server must exit with a readable message, not a stack trace.
+      # Without a token the server must still start, list every tool, and answer
+      # each call with how to get a token — not a stack trace, not a network call.
       - name: Smoke run without a token
-        run: |
-          set +e
-          out=$(node dist/index.js 2>&1 < /dev/null); code=$?
-          echo "$out"
-          [ "$code" -ne 0 ] && echo "$out" | grep -q "SOMIYA_TOKEN is not set"
+        run: node scripts/smoke.mjs

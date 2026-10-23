@@ -38,7 +38,7 @@ The server runs on your machine. Your assistant talks to it, it talks to the Som
 | `somiya_suggest_task` | `suggest:changes` | Files a task for you to confirm in the app. Creates nothing |
 | `somiya_suggest_shopping_item` | `suggest:changes` | Files an item for you to confirm in the app. Creates nothing |
 
-Only the tools your token's scopes cover are advertised — the assistant never sees a tool it would be refused. Scopes are chosen when you create the token; the read scopes are on by default and `suggest:changes` is off.
+Only the tools your token's scopes cover are advertised — the assistant never sees a tool it would be refused. Started without a token, the server lists every tool and each one answers with how to get a token. Scopes are chosen when you create the token; the read scopes are on by default and `suggest:changes` is off.
 
 ## Configuration
 

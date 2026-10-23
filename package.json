@@ -1,6 +1,6 @@
 {
   "name": "somiya-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "mcpName": "app.somiya/mcp",
   "description": "MCP server for Somiya — point your own AI assistant at your family's calendar and tasks. It reads and suggests; you confirm in the app.",
   "license": "MIT",

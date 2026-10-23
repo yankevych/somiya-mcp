@@ -25,6 +25,16 @@ The server runs on your machine. Your assistant talks to it, it talks to the Som
 
 3. Restart the client and ask it *"what's on for the family this week?"*
 
+## Try it without the app
+
+A read-only token for a made-up family, the Riveras, is public, so you can see what your assistant gets before installing anything:
+
+```bash
+claude mcp add somiya-demo -e SOMIYA_TOKEN=smcp_NDh8cy3ETXdhz37s-_cr8XgctTUYh3QgUMDIDqTy1zI -- npx -y somiya-mcp
+```
+
+Or put it in the config above. It reads their calendar, tasks and shopping lists, and it cannot suggest anything. Everyone who tries it shares the one token, so on a busy day it may answer "too many requests" for a minute.
+
 ## Tools
 
 | Tool | Needs scope | What it returns |

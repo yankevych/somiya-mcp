@@ -27,3 +27,20 @@ jobs:
       # each call with how to get a token — not a stack trace, not a network call.
       - name: Smoke run without a token
         run: node scripts/smoke.mjs
+
+  docker:
+    # Glama builds this image to read the tool list; keep it building.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - run: docker build -t somiya-mcp .
+      - name: Tool list from the image, without a token
+        run: |
+          # stdin stays open a few seconds so the answers are written before EOF.
+          { printf '%s\n' \
+              '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"ci","version":"0"}}}' \
+              '{"jsonrpc":"2.0","method":"notifications/initialized"}' \
+              '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'; sleep 5; } \
+            | timeout 20 docker run -i --rm somiya-mcp > out.jsonl || true
+          cat out.jsonl
+          grep '"id":2' out.jsonl | grep -q '"somiya_whats_next"'

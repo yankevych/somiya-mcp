@@ -82,8 +82,6 @@ pnpm install
 pnpm build
 ```
 
-Inside the Somiya monorepo, use `pnpm install --ignore-workspace` instead. It matters there: this package deliberately sits outside the monorepo's pnpm workspace. The repo hoists its `node_modules` (`shamefully-hoist=true`), and folding an HTTP-server dependency tree into the workspace would put packages within reach of the mobile app's resolver that have no business being there.
-
 Requires Node 20+ (uses global `fetch`).
 
 ## License
